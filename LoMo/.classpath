@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="F:/Sem5/Software Project/Testing/junit-4.10.jar"/>
+	<classpathentry kind="lib" path="libs/acra-4.5.0.jar"/>
+	<classpathentry kind="lib" path="libs/logentries-android-2.1.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="C:/sdk/platforms/android-19/android.jar"/>
+	<classpathentry kind="lib" path="C:/sdk/platforms/android-19/uiautomator.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/monkeytalk-agent-2.0.8.jar"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

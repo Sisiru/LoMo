@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.app.lomo"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19" />
+
+    <permission
+        android:name="com.app.lomo.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" >
+    </permission>
+
+    <uses-permission android:name="com.app.lomo.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.LOCATION_HARDWARE" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/yyy"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCTh1kmTgQVtMl4YURyI5D1jOj_se_bZHM" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="true" />
+
+        <activity
+            android:name="com.app.lomo.MainScreen"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.app.lomo.MAINSCREEN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.lomo.BeginScreen"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.lomo.PlanDay"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.app.lomo.PLANDAY" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.lomo.GoogleMap"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.app.lomo.GOOGLEMAP" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.lomo.ViewAll"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.app.lomo.VIEWALL" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.lomo.PlanFuture"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.app.lomo.PLANFUTURE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.lomo.ViewTask"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.app.lomo.EDITTASK" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.lomo.Perimeter"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.app.lomo.PERIMETER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.lomo.LocationManagerStatus"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.app.lomo.LOCATIONMANAGERSTATUS" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.lomo.Notification"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.app.lomo.NOTIFICATION" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.lomo.About"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.app.lomo.ABOUT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.lomo.DrawRoute"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.app.lomo.DRAWROUTE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.lomo.DrawPath"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.app.lomo.DRAWPATH" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.lomo.Settings"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.app.lomo.SETTINGS" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name="com.app.lomo.TrackPath"
+            android:exported="false" >
+        </service>
+        <service
+            android:name="com.app.lomo.TrackLocation"
+            android:exported="false" >
+        </service>
+
+        <receiver android:name="MyScheduleReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="MyStartServiceReceiver" >
+        </receiver>
+        <receiver android:name="com.app.lomo.AutoStart" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

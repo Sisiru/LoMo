@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LoMo
+Bundle-SymbolicName: LoMo
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: LoMo.jar,
+ Software Project/Testing/junit-4.10.jar
+Export-Package: com.app.lomo
