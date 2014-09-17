@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-
+//The main screen of the application
 public class MainScreen extends Activity {
 	private Button btCount;
 	private Button btPlan;
@@ -30,40 +30,43 @@ public class MainScreen extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		// Remove title bar
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.fragment_main);
-		databaseInit();
-		initialize();
-		clickPlanButton();
-		clickCountButton();
-		clickPhotoButton();
-		clickPerimeterButton();
-		clickSettings();
-		clickAboutButton();
-		checkReceiverNumber();
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);//removes the title bar
+		setContentView(R.layout.fragment_main);//setting the layout
+		databaseInit();//initializing database
+		initialize();//initializing the variables
+		clickPlanButton();//add a task for current day
+		clickCountButton();//view all
+		clickPhotoButton();//add a task for a future day
+		clickPerimeterButton();//secure device option
+		clickEnable();//enabling and disabling the lomo action
+		clickAboutButton();//view about
+		checkReceiverNumber();//check whether a receiver no added or not
 		// LocationTracker lTrack=new LocationTracker(MainScreen.this);
 
 	}
 
+	//starting the background service
 	public void startService() {
 		Intent intent = new Intent(MainScreen.this, TrackLocation.class);
-		startService(intent);
+		startService(intent);//starting the service
 	}
 
+	//stopping the background service
 	public void stopService() {
 		Intent intent = new Intent(MainScreen.this, TrackLocation.class);
-		stopService(intent);
+		stopService(intent);//stop service
 	}
 
-	public void clickSettings() {
+	//when 
+	public void clickEnable() {
 		btSettings.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-
+				//opening the database
 				SQLiteDatabase mydatbase = openOrCreateDatabase("lomo",
 						MODE_PRIVATE, null);
-
+				//check whether the lomo service activated or not
 				if (status) {
 					status = false;
 					lDisplay.setBackgroundResource(R.drawable.main2);
