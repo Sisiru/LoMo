@@ -57,10 +57,10 @@ public class BeginScreen extends Activity {
 		set.addAnimation(animation);
 
 		animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
-		        -1.0f, Animation.RELATIVE_TO_SELF, 2.0f,
-		        Animation.RELATIVE_TO_SELF, 0.0f,
-		        Animation.RELATIVE_TO_SELF, 0.0f);
-		animation.setDuration(5000);
+		        -1.0f, Animation.RELATIVE_TO_SELF, 0.55f,
+		        Animation.RELATIVE_TO_SELF, 8.0f,
+		        Animation.RELATIVE_TO_SELF, 8.0f);
+		animation.setDuration(4000);
 		set.addAnimation(animation);
 
 		LayoutAnimationController controller = new LayoutAnimationController(set, 10.25f);
@@ -88,18 +88,18 @@ public class BeginScreen extends Activity {
 
 	        @Override
 	        public void onAnimationEnd(Animation animation) {
-	        	Thread myThread=new Thread(){
-	    			public void run() {
-	    				try{
-	    					sleep(3000);
-	    				}catch(Exception e){
+	        	//Thread myThread=new Thread(){
+	    		//	public void run() {
+	    		//		try{
+	    		//			sleep(4000);
+	    		//		}catch(Exception e){
 	    					
-	    				}finally{
+	    		//		}finally{
 	    					Intent intent = new Intent("com.app.lomo.MAINSCREEN");
 	    		    		startActivity(intent);
-	    				}
-	    			}
-	    		};myThread.start();
+	    		//		}
+	    		//	}
+	    		//};myThread.start();
 	        	
 
 	        }
