@@ -36,7 +36,7 @@ public class MainScreen extends Activity {
 		initialize();//initializing the variables
 		clickPlanButton();//add a task for current day
 		clickCountButton();//view all
-		clickPhotoButton();//add a task for a future day
+		clickFutureTaskButton();//add a task for a future day
 		clickPerimeterButton();//secure device option
 		clickEnable();//enabling and disabling the lomo action
 		clickAboutButton();//view about
@@ -57,7 +57,7 @@ public class MainScreen extends Activity {
 		stopService(intent);//stop service
 	}
 
-	//when 
+	//when clicking the enable/disable button 
 	public void clickEnable() {
 		btSettings.setOnClickListener(new View.OnClickListener() {
 
@@ -68,23 +68,28 @@ public class MainScreen extends Activity {
 						MODE_PRIVATE, null);
 				//check whether the lomo service activated or not
 				if (status) {
+					//if the lomo app is in on state,set it to off 
 					status = false;
-					lDisplay.setBackgroundResource(R.drawable.main2);
+					lDisplay.setBackgroundResource(R.drawable.main2);//background change
+					//updating the database
 					mydatbase
 							.execSQL("update secureDevice set status='off' where id='1'");
-					stopService();
+					stopService();//stop service
 				} else {
+					//if the lomo app is in off state, activate it
 					status = true;
-					lDisplay.setBackgroundResource(R.drawable.main1);
+					lDisplay.setBackgroundResource(R.drawable.main1);//background change
+					//updating the database
 					mydatbase
 							.execSQL("update secureDevice set status='on' where id='1'");
-					startService();
+					startService();//start service
 				}
-				mydatbase.close();
+				mydatbase.close();//close database
 			}
 		});
 	}
 
+	//initializing
 	public void initialize() {
 		btCount = (Button) findViewById(R.id.btCount);
 		btPlan = (Button) findViewById(R.id.btPlan);
@@ -99,52 +104,60 @@ public class MainScreen extends Activity {
 		// Checking the number of data filled to the table
 		Cursor resultSet = db.rawQuery("select * from task", null);
 		DecimalFormat dec = new DecimalFormat("00");
+		//set the total count of the tasks to be completed
 		btCount.setText(dec.format(resultSet.getCount()) + "");
 
 		lDisplay = (LinearLayout) findViewById(R.id.myback);
+		//check whether lomo app is ativated at the beginning
 		Cursor result = db.rawQuery("select * from secureDevice where id='1'",
 				null);
 		result.moveToFirst();
 		if (result.getString(9).equalsIgnoreCase("on")) {
+			//if the lomo is activated
 			status = true;
-			lDisplay.setBackgroundResource(R.drawable.main1);
+			lDisplay.setBackgroundResource(R.drawable.main1);//set the relevant background
 		} else {
+			//if deactivated
 			status = false;
-			lDisplay.setBackgroundResource(R.drawable.main2);
+			lDisplay.setBackgroundResource(R.drawable.main2);//set the relevant background
 		}
-		db.close();
+		db.close();//closing the database
 
 	}
 
+	//adding a new task for current day
 	public void clickPlanButton() {
 		btPlan.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MainScreen.this, PlanDay.class);
-				startActivityForResult(intent, 1);
+				startActivityForResult(intent, 1);//starting the add task activity
 			}
 		});
 	}
 
+	//when the count button is clicked
 	public void clickCountButton() {
 		btCount.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MainScreen.this, ViewAll.class);
-				intent.putExtra("Day", "every");
-				startActivityForResult(intent, 1);
+				intent.putExtra("Day", "every");//passes extra data
+				startActivityForResult(intent, 1);//starting the view all activity
 
 			}
 		});
 	}
 
-	public void clickPhotoButton() {
+	//when user wants to add a task for future
+	public void clickFutureTaskButton() {
 		btPhoto.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				//starting the activity
 				Intent intent = new Intent(MainScreen.this, PlanFuture.class);
 				startActivityForResult(intent, 1);
 
@@ -152,6 +165,7 @@ public class MainScreen extends Activity {
 		});
 	}
 
+	//secure my device option
 	public void clickPerimeterButton() {
 		btPerimeter.setOnClickListener(new View.OnClickListener() {
 
