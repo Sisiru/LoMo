@@ -395,6 +395,7 @@ public class TrackLocation extends Service {
 		for (int i = 0; i < taskArray.size(); i++) {
 			task = taskArray.get(i);
 			//calculating the distance
+			Log.i("******************************************************Task", task.getTaskName()+" "+task.getDate()+" "+task.getDescription());
 			dist = distance(currentLat, currentLon,
 					Double.parseDouble(task.getLatitude()),
 					Double.parseDouble(task.getLongitude()));

@@ -73,8 +73,31 @@ public class ViewTask extends FragmentActivity {
 		btCancel = (Button) findViewById(R.id.btCancel);
 		position=getIntent().getStringExtra("Position");
 		btCount=(Button)findViewById(R.id.btPlanCount);
+		
+		
 		//Toast.makeText(ViewTask.this, position, Toast.LENGTH_SHORT).show();
 		
+	}
+	
+	private void initDatabase(){
+		SQLiteDatabase db=openOrCreateDatabase("lomo", MODE_PRIVATE, null);
+		Cursor resultTask=db.rawQuery("select * from task where taskid='"+position+"';", null);
+		resultTask.moveToFirst();
+		txtTask.setText(resultTask.getString(1));
+		txtDescription.setText(resultTask.getString(2));
+		btLocation.setText(resultTask.getString(3));
+		btDate.setText(resultTask.getString(6));
+		btStart.setText(resultTask.getString(7));
+		longitude=resultTask.getString(4);
+		latitude=resultTask.getString(5);
+		if(resultTask.getString(8).equalsIgnoreCase("high")){
+			btEnd.setBackgroundResource(R.drawable.highbutton);
+			priority=true;
+		}else{
+			btEnd.setBackgroundResource(R.drawable.lowbutton);
+			priority=false;
+		}
+		db.close();
 	}
 
 	private void clickDoneButton() {
@@ -160,24 +183,6 @@ public class ViewTask extends FragmentActivity {
 
 	}
 	
-	private void initDatabase(){
-		SQLiteDatabase db=openOrCreateDatabase("lomo", MODE_PRIVATE, null);
-		Cursor resultTask=db.rawQuery("select * from task where taskid='"+position+"';", null);
-		resultTask.moveToFirst();
-		txtTask.setText(resultTask.getString(1));
-		txtDescription.setText(resultTask.getString(2));
-		btLocation.setText(resultTask.getString(3));
-		btDate.setText(resultTask.getString(6));
-		btStart.setText(resultTask.getString(7));
-		if(resultTask.getString(8).equalsIgnoreCase("high")){
-			btEnd.setBackgroundResource(R.drawable.highbutton);
-			priority=true;
-		}else{
-			btEnd.setBackgroundResource(R.drawable.lowbutton);
-			priority=false;
-		}
-		db.close();
-	}
 	
 	private void clickCountButton() {
 		btCount.setOnClickListener(new View.OnClickListener() {

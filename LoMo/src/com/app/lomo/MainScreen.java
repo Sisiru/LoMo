@@ -22,8 +22,10 @@ public class MainScreen extends Activity {
 	private Button btPerimeter;
 	private Button btSettings;
 	private Button btAbout;
+	private Button btHelp;
 	private LinearLayout lDisplay;
 	private boolean status = false;
+	private boolean help=false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class MainScreen extends Activity {
 		clickAboutButton();//view about
 		checkReceiverNumber();//check whether a receiver no added or not
 		// LocationTracker lTrack=new LocationTracker(MainScreen.this);
+		clickHelpButton();
 
 	}
 
@@ -97,6 +100,7 @@ public class MainScreen extends Activity {
 		btPerimeter = (Button) findViewById(R.id.btPerimeter);
 		btSettings = (Button) findViewById(R.id.btSettings);
 		btAbout = (Button) findViewById(R.id.btAbout);
+		btHelp=(Button)findViewById(R.id.btHelp);
 
 		SQLiteDatabase db = openOrCreateDatabase("lomo", MODE_PRIVATE, null);// Opening
 		// the
@@ -174,6 +178,32 @@ public class MainScreen extends Activity {
 				Intent intent = new Intent(MainScreen.this, Perimeter.class);
 				startActivity(intent);
 
+			}
+		});
+	}
+	
+	public void clickHelpButton(){
+		btHelp.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(!help){
+					if(status){
+						lDisplay.setBackgroundResource(R.drawable.help1);
+					}else{
+						lDisplay.setBackgroundResource(R.drawable.help2);
+					}
+					help=true;
+				}else{
+					if(status){
+						lDisplay.setBackgroundResource(R.drawable.main1);
+					}else{
+						lDisplay.setBackgroundResource(R.drawable.main2);
+					}
+					help=false;
+				}
+				
+				
 			}
 		});
 	}
