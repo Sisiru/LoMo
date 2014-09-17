@@ -140,7 +140,16 @@ public class ViewTask extends FragmentActivity {
 					SQLiteDatabase db=openOrCreateDatabase("lomo", MODE_PRIVATE, null);
 					db.execSQL("update task set taskName='"+task+"',description='"+description+"',location='"+location+"',latitude='"+latitude+"',longitude='"+longitude+"',date='"+date+"',time='"+startTime+"',priority='"+priorityString+"' where taskid='"+position+"'");
 					db.close();
-					finish();
+					AlertDialog.Builder alert=new AlertDialog.Builder(ViewTask.this);
+					alert.setMessage("Data updated successfully");
+					alert.setTitle("Success");
+					alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							finish();
+						}
+					});
 				}
 
 			}
