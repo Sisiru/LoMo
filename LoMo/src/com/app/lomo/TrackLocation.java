@@ -422,6 +422,7 @@ public class TrackLocation extends Service {
 				//putting additional information into the intent
 				intent.putExtra("Task", nearTask.getTaskName());
 				intent.putExtra("TaskId", nearTask.getTaskId());
+				intent.putExtra("Address", nearTask.getLocation());
 				intent.putExtra("Distance", nearTask.getDistance());
 				//displaying the notification in the status bar
 				displayNotification(nearTask.getTaskName());
@@ -448,6 +449,7 @@ public class TrackLocation extends Service {
 					//adding additional information to the intent to be passed
 					intent.putExtra("Task", nTask.getTaskName());
 					intent.putExtra("TaskId", nTask.getTaskId());
+					intent.putExtra("Address", nTask.getLocation());
 					intent.putExtra("Distance", nTask.getDistance());
 					//displaying the notification in the status bar
 					displayNotification(nTask.getTaskName());
@@ -458,6 +460,7 @@ public class TrackLocation extends Service {
 					//adding additional information to intent
 					intent.putExtra("Task", nTask.getTaskName());
 					intent.putExtra("TaskId", nTask.getTaskId());
+					intent.putExtra("Address", nTask.getLocation());
 					intent.putExtra("Distance", nTask.getDistance());
 					//displaying the notification in the status bar
 					displayNotification(nTask.getTaskName());
@@ -660,7 +663,7 @@ public class TrackLocation extends Service {
 		Builder noti = new NotificationCompat.Builder(this);
 		noti.setContentTitle("Reminder");// Title of the notification
 		noti.setContentText(title);// Content of the notification
-		noti.setSmallIcon(R.drawable.ic_launcher);// sets the icon
+		noti.setSmallIcon(R.drawable.yyy);// sets the icon
 		notificationManager.notify(1234, noti.build());// displaing the
 														// notification
 	}

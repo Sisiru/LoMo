@@ -26,6 +26,7 @@ public class Notification extends Activity {
 	private TextView txtTask;
 	private TextView txtDistance;
 	private TextView txtTime;
+	private TextView txtAddress;
 	private Button btDone;
 	private Button btSnooze;
 	private Button btNavigate;
@@ -80,6 +81,7 @@ public class Notification extends Activity {
 		txtTask = (TextView) findViewById(R.id.txtTask);
 		txtDistance = (TextView) findViewById(R.id.txtDistance);
 		txtTime = (TextView) findViewById(R.id.txtTime);
+		txtAddress = (TextView) findViewById(R.id.txtAddress);
 		btDone = (Button) findViewById(R.id.btDone);
 		btSnooze = (Button) findViewById(R.id.btSnooze);
 		btNavigate = (Button) findViewById(R.id.btNavigate);
@@ -94,6 +96,8 @@ public class Notification extends Activity {
 		String distance = bundle.getString("Distance");// distance to the task
 														// location from the
 														// current location
+		String address=bundle.getString("Address");
+		txtAddress.setText(address);
 		txtTask.setText(taskName);// setting the name of the task
 		// setting the distance to the task location
 		txtDistance.setText(String.format("%.2f", Double.parseDouble(distance))
