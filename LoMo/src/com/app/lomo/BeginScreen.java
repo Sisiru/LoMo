@@ -1,13 +1,9 @@
 package com.app.lomo;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -33,12 +29,12 @@ public class BeginScreen extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.begin);// sets the layout
 		// runs new thread in order to run this activity only for 5 secons
-		bt=(Button) findViewById(R.id.mybt);
-		linear=(LinearLayout)findViewById(R.id.layout);
-		
+		bt = (Button) findViewById(R.id.mybt);
+		linear = (LinearLayout) findViewById(R.id.layout);
+
 		animationInit();
 		startingActivity();
-				
+
 	}
 
 	@Override
@@ -48,61 +44,49 @@ public class BeginScreen extends Activity {
 		finish();
 
 	}
-	
-	private void animationInit(){
+
+	// animation in the begin screen
+	private void animationInit() {
 		AnimationSet set = new AnimationSet(true);
 
 		animation = new AlphaAnimation(0.0f, 100.0f);
-		animation.setDuration(5000);
+		animation.setDuration(5000);// duration of the animation
 		set.addAnimation(animation);
-
-		animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
-		        -1.0f, Animation.RELATIVE_TO_SELF, 0.55f,
-		        Animation.RELATIVE_TO_SELF, 8.0f,
-		        Animation.RELATIVE_TO_SELF, 8.0f);
+		// sets the from location and to location of the animation
+		animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f,
+				Animation.RELATIVE_TO_SELF, 0.55f, Animation.RELATIVE_TO_SELF,
+				8.0f, Animation.RELATIVE_TO_SELF, 8.0f);
 		animation.setDuration(4000);
 		set.addAnimation(animation);
 
-		LayoutAnimationController controller = new LayoutAnimationController(set, 10.25f);
+		LayoutAnimationController controller = new LayoutAnimationController(
+				set, 10.25f);
 
 		linear.setLayoutAnimation(controller);
-		controller.start();
+		controller.start();// starting the animation
 
 	}
-	
-	private void startingActivity(){
+
+	private void startingActivity() {
 		animation.setAnimationListener(new AnimationListener() {
 
+			@Override
+			public void onAnimationStart(Animation animation) {
+				// TODO Auto-generated method stub
 
-	        @Override
-	        public void onAnimationStart(Animation animation) {
-	            // TODO Auto-generated method stub
+			}
 
-	        }
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// TODO Auto-generated method stub
 
-	        @Override
-	        public void onAnimationRepeat(Animation animation) {
-	            // TODO Auto-generated method stub
+			}
 
-	        }
-
-	        @Override
-	        public void onAnimationEnd(Animation animation) {
-	        	//Thread myThread=new Thread(){
-	    		//	public void run() {
-	    		//		try{
-	    		//			sleep(4000);
-	    		//		}catch(Exception e){
-	    					
-	    		//		}finally{
-	    					Intent intent = new Intent("com.app.lomo.MAINSCREEN");
-	    		    		startActivity(intent);
-	    		//		}
-	    		//	}
-	    		//};myThread.start();
-	        	
-
-	        }
-	    });
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				Intent intent = new Intent("com.app.lomo.MAINSCREEN");
+				startActivity(intent);//starting the new activity when the animation is over
+			}
+		});
 	}
 }

@@ -135,14 +135,14 @@ public class Notification extends Activity {
 		super.onPause();
 	}
 
-	//when the done button is clicked
+	// when the done button is clicked
 	private void clickDone() {
 		btDone.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// mMediaPlayer.stop();
-				//alert dialog is displayed
+				// alert dialog is displayed
 				AlertDialog.Builder alert = new AlertDialog.Builder(
 						Notification.this);
 				alert.setTitle("Confirm");
@@ -154,9 +154,11 @@ public class Notification extends Activity {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								if (sound.equalsIgnoreCase("on"))
-									mMediaPlayer.stop();//stopping the alarm tone
-								deleteTask();//deleting the task from the database
-								finish();//finishing the activity
+									mMediaPlayer.stop();// stopping the alarm
+														// tone
+								deleteTask();// deleting the task from the
+												// database
+								finish();// finishing the activity
 							}
 						});
 				alert.setNegativeButton("No",
@@ -167,31 +169,33 @@ public class Notification extends Activity {
 									int which) {
 								finish();
 								if (sound.equalsIgnoreCase("on"))
-									mMediaPlayer.stop();//stopping the alerm tone
+									mMediaPlayer.stop();// stopping the alerm
+														// tone
 							}
 						});
-				alert.create().show();//creating the alert dialog
+				alert.create().show();// creating the alert dialog
 
 			}
 		});
 	}
 
-	//when the snooze button is clicked
+	// when the snooze button is clicked
 	private void clickSnooze() {
 		btSnooze.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				//open the database
+				// open the database
 				SQLiteDatabase mydb = openOrCreateDatabase("lomo",
 						MODE_PRIVATE, null);
 				Cursor result = mydb.rawQuery(
-						"select * from securedevice where id='1'", null);//access settings 
+						"select * from securedevice where id='1'", null);// access
+																			// settings
 				result.moveToFirst();
-				notificationTime = result.getString(11);//alert time
-				mydb.close();//closing the database
+				notificationTime = result.getString(11);// alert time
+				mydb.close();// closing the database
 				if (sound.equalsIgnoreCase("on"))
-					mMediaPlayer.stop();//
+					mMediaPlayer.stop();// stopping the alerm tone
 				AlertDialog.Builder alert = new AlertDialog.Builder(
 						Notification.this);
 				alert.setTitle("Snooze Task");
@@ -204,26 +208,28 @@ public class Notification extends Activity {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								// mMediaPlayer.stop();
-								finish();
+								finish();// after snoozing finishing the
+											// activity
 
 							}
 						});
-				alert.create().show();
+				alert.create().show();//creating the alert dialog
 
 			}
 		});
 	}
 
+	//to play the sound when displaying the notification
 	private void playSound(Context context, Uri alert) {
-		mMediaPlayer = new MediaPlayer();
+		mMediaPlayer = new MediaPlayer();//media player init
 		try {
 			mMediaPlayer.setDataSource(context, alert);
 			final AudioManager audioManager = (AudioManager) context
-					.getSystemService(Context.AUDIO_SERVICE);
+					.getSystemService(Context.AUDIO_SERVICE);//getting the audio service
 			if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
 				mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
 				mMediaPlayer.prepare();
-				mMediaPlayer.start();
+				mMediaPlayer.start();//starting the media player
 			}
 		} catch (IOException e) {
 			// Problem with the media player
@@ -243,16 +249,20 @@ public class Notification extends Activity {
 		return alert;
 	}
 
+	//deleting a task
 	private void deleteTask() {
+		//opening the database
 		SQLiteDatabase mydatbase = openOrCreateDatabase("lomo", MODE_PRIVATE,
 				null);
+		//delete query
 		mydatbase.execSQL("delete from task where  taskid= '" + taskID + "'");
 		mydatbase
 				.execSQL("UPDATE task set taskid = (taskid - 1) WHERE taskid > "
 						+ taskID);
-		mydatbase.close();
+		mydatbase.close();//closing the database
 	}
 
+	//when the navigation button is clicked
 	private void clickNavigation() {
 		btNavigate.setOnClickListener(new View.OnClickListener() {
 
@@ -260,9 +270,10 @@ public class Notification extends Activity {
 			public void onClick(View v) {
 				// progressDisplay();
 				Intent intent = new Intent(Notification.this, DrawPath.class);
+				//sending the latitude and longitude location 
 				intent.putExtra("Latitude", latitude);
 				intent.putExtra("Longitude", longitude);
-				startActivity(intent);
+				startActivity(intent);//starting the next activity
 				if (sound.equalsIgnoreCase("on"))
 					mMediaPlayer.stop();
 				finish();

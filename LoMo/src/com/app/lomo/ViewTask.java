@@ -149,7 +149,7 @@ public class ViewTask extends FragmentActivity {
 						public void onClick(DialogInterface dialog, int which) {
 							finish();
 						}
-					});
+					});alert.create().show();
 				}
 
 			}

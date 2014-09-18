@@ -17,7 +17,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Criteria;
@@ -89,8 +92,9 @@ public class GoogleMap extends FragmentActivity implements LocationListener {
 				googleMap = ((SupportMapFragment) getSupportFragmentManager()
 						.findFragmentById(R.id.map)).getMap();// getting the
 																// google map
-				//googleMap.setMyLocationEnabled(true);// setting the my location
-														// button
+				// googleMap.setMyLocationEnabled(true);// setting the my
+				// location
+				// button
 
 			} catch (Exception e) {
 				Toast.makeText(getApplicationContext(), "Sorry!",
@@ -146,8 +150,8 @@ public class GoogleMap extends FragmentActivity implements LocationListener {
 						Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 				startActivity(intent);// Opens the GPS settings page
 			}
-		}else{
-			provider="network";
+		} else {
+			provider = "network";
 		}
 
 		loc = locationManager.getLastKnownLocation(provider);// Gets the last
@@ -167,20 +171,38 @@ public class GoogleMap extends FragmentActivity implements LocationListener {
 																			// the
 																			// gps
 																			// provider
-				if (!enabled) {
-					Intent intent = new Intent(
-							Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-					startActivity(intent);
-				}
 			}
 			// Gets the current location
 			Location location = locationManager.getLastKnownLocation(provider);
-			lat = location.getLatitude();// Getting the latitude value of the
-											// location
-			lon = location.getLongitude();// Getting the longitude value of the
-											// location
-			// txtLocation.setText(provider + " " + lat + " , " + lon);
+			if (location == null) {
+				AlertDialog.Builder alert = new AlertDialog.Builder(
+						GoogleMap.this);
+				alert.setTitle("LoMo Service");
+				alert.setMessage("Please turn on the LoMo service and retry again");
+				alert.setPositiveButton("Ok",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								finish();
+
+							}
+						});
+				alert.create().show();
+			} else {
+				lat = location.getLatitude();// Getting the latitude value of
+												// the
+				// location
+				lon = location.getLongitude();// Getting the longitude value of
+												// the
+				// location
+				// txtLocation.setText(provider + " " + lat + " , " + lon);
+				//lat=0;lon=0;
+			}
+
 		}
+		
 
 		LatLng coordinate = new LatLng(lat, lon);// Creating the location using
 													// location data
@@ -484,6 +506,19 @@ public class GoogleMap extends FragmentActivity implements LocationListener {
 			menu.add(0, i, 0, myAdd);
 
 		}
+		if(addressList.size()==0){
+			AlertDialog.Builder alert=new AlertDialog.Builder(GoogleMap.this);
+			alert.setTitle("Verify");
+			alert.setMessage("Please enter a valid location");
+			alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+					
+				}
+			});alert.create().show();
+		}
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 
@@ -514,62 +549,61 @@ public class GoogleMap extends FragmentActivity implements LocationListener {
 		}
 		return addressText;
 	}
-	
-	//method to disconnect the mobile data connection
-		private void setMobileDataEnabled(Context context, boolean enabled) {
-			try {
-				final ConnectivityManager conman = (ConnectivityManager) context
-						.getSystemService(Context.CONNECTIVITY_SERVICE);
-				final Class conmanClass = Class
-						.forName(conman.getClass().getName());
-				final Field connectivityManagerField = conmanClass
-						.getDeclaredField("mService");
-				connectivityManagerField.setAccessible(true);
-				final Object connectivityManager = connectivityManagerField
-						.get(conman);
-				final Class connectivityManagerClass = Class
-						.forName(connectivityManager.getClass().getName());
-				final Method setMobileDataEnabledMethod = connectivityManagerClass
-						.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-				setMobileDataEnabledMethod.setAccessible(true);
-				setMobileDataEnabledMethod.invoke(connectivityManager, enabled);
-			} catch (Exception e) {
 
-			}
-
-		}
-
-		//checks whether the device is cooected to a working data connection
-		private boolean hasConnection() {
-			ConnectivityManager cm = (ConnectivityManager) this
+	// method to disconnect the mobile data connection
+	private void setMobileDataEnabled(Context context, boolean enabled) {
+		try {
+			final ConnectivityManager conman = (ConnectivityManager) context
 					.getSystemService(Context.CONNECTIVITY_SERVICE);
+			final Class conmanClass = Class
+					.forName(conman.getClass().getName());
+			final Field connectivityManagerField = conmanClass
+					.getDeclaredField("mService");
+			connectivityManagerField.setAccessible(true);
+			final Object connectivityManager = connectivityManagerField
+					.get(conman);
+			final Class connectivityManagerClass = Class
+					.forName(connectivityManager.getClass().getName());
+			final Method setMobileDataEnabledMethod = connectivityManagerClass
+					.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+			setMobileDataEnabledMethod.setAccessible(true);
+			setMobileDataEnabledMethod.invoke(connectivityManager, enabled);
+		} catch (Exception e) {
 
-			NetworkInfo wifiNetwork = cm
-					.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-			if (wifiNetwork != null && wifiNetwork.isConnected()) {
-				return true;
-			}
-
-			NetworkInfo mobileNetwork = cm
-					.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-			if (mobileNetwork != null && mobileNetwork.isConnected()) {
-				return true;
-			}
-
-			NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-			if (activeNetwork != null && activeNetwork.isConnected()) {
-				return true;
-			}
-
-			return false;
-		}
-		
-		@Override
-		public void onBackPressed() {
-			//mobile data connection is disabled
-			setMobileDataEnabled(GoogleMap.this, false);
-			super.onBackPressed();
 		}
 
+	}
+
+	// checks whether the device is cooected to a working data connection
+	private boolean hasConnection() {
+		ConnectivityManager cm = (ConnectivityManager) this
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		NetworkInfo wifiNetwork = cm
+				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		if (wifiNetwork != null && wifiNetwork.isConnected()) {
+			return true;
+		}
+
+		NetworkInfo mobileNetwork = cm
+				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		if (mobileNetwork != null && mobileNetwork.isConnected()) {
+			return true;
+		}
+
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		if (activeNetwork != null && activeNetwork.isConnected()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public void onBackPressed() {
+		// mobile data connection is disabled
+		setMobileDataEnabled(GoogleMap.this, false);
+		super.onBackPressed();
+	}
 
 }
