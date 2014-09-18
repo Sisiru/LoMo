@@ -36,44 +36,50 @@ public class Perimeter extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.perimeter);// Sets the layout
-		initialize();
+		initialize();// initializing
 
-		clickDone();
-		clickEnableButton();
-		clickRadius();
-		clickLocation();
-		clickDrawMap();
-		clickCountButton();
-		clickSettings();
+		clickDone();// clicking the done button
+		clickEnableButton();// clicking the enable button
+		clickRadius();// clicking thr radius button
+		clickLocation();// vlivking the location button
+		clickDrawMap();// clicking the drwMap button
+		clickCountButton();// clicking the count button
+		clickSettings();// clicking the settings button
 	}
 
-	private void initialize() {
+	private void initialize() {// initializing
 		btEnable = (Button) findViewById(R.id.btEnable);
 		btRadius = (Button) findViewById(R.id.btRadius);
 		btPoint = (Button) findViewById(R.id.btPoint);
 		btMap = (Button) findViewById(R.id.btMap);
 		btAdvance = (Button) findViewById(R.id.btAdvanced);
 		btDone = (Button) findViewById(R.id.btDone);
-		btCount=(Button)findViewById(R.id.btCount);
-		
+		btCount = (Button) findViewById(R.id.btCount);
+
+		// opening the database
 		SQLiteDatabase myDb = openOrCreateDatabase("lomo", MODE_PRIVATE, null);
-		Cursor resultSet = myDb.rawQuery("select * from task", null);// Get all the tasks
+		Cursor resultSet = myDb.rawQuery("select * from task", null);// Get all
+																		// the
+																		// tasks
 		DecimalFormat dec = new DecimalFormat("00");
 		btCount.setText(dec.format(resultSet.getCount()) + "");// Set the count
-		Cursor cursor = myDb.rawQuery("select * from secureDevice", null);
+		Cursor cursor = myDb.rawQuery("select * from secureDevice", null);// get
+																			// the
+																			// settings
 		cursor.moveToFirst();
 
 		//
 		if (cursor.getString(1).equalsIgnoreCase("off")) {
-			enabled = false;
+			enabled = false;// secure mode off state
 			btEnable.setBackgroundResource(0);
 			btRadius.setBackgroundResource(0);
 			btPoint.setBackgroundResource(0);
 			btDone.setBackgroundResource(0);
 			btPoint.setText("");
 		} else {
+			// secure mode on state
 			enabled = true;
-			alertS = cursor.getString(1);
+			alertS = cursor.getString(1);// default alert mode
 			radiusS = cursor.getString(2);
 			switch (alertS) {
 			case "alert":
@@ -86,6 +92,7 @@ public class Perimeter extends Activity {
 
 			}
 
+			// setting the radius
 			switch (radiusS) {
 			case "1000":
 				radius = 2;
@@ -101,12 +108,14 @@ public class Perimeter extends Activity {
 				break;
 			}
 
+			// setting the secure mode button background
 			if (alert == 1) {
 				btEnable.setBackgroundResource(R.drawable.alert);
 			} else if (alert == 2) {
 				btEnable.setBackgroundResource(R.drawable.containn);
 			}
 
+			// setting the radius button background
 			if (radius == 1) {
 				btRadius.setBackgroundResource(R.drawable.m500);
 			} else if (radius == 2) {
@@ -115,26 +124,32 @@ public class Perimeter extends Activity {
 				btRadius.setBackgroundResource(R.drawable.m1500);
 			}
 
+			// set the background image
 			btDone.setBackgroundResource(R.drawable.deactivate);
 			if (!cursor.getString(5).equalsIgnoreCase("none")) {
 				btPoint.setBackgroundResource(R.drawable.current_selected);
 				btPoint.setText(cursor.getString(5));
 			}
+			// gets the secure location coordinates
 			latitude = cursor.getString(6);
 			longitude = cursor.getString(7);
 		}
-		myDb.close();
+		myDb.close();// closing the database
 	}
 
-
+	// when done button is clicked
 	private void clickDone() {
 		btDone.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				SQLiteDatabase myDb = openOrCreateDatabase("lomo", MODE_PRIVATE, null);
-				Cursor cursor = myDb.rawQuery("select * from secureDevice", null);
+				// opening the database
+				SQLiteDatabase myDb = openOrCreateDatabase("lomo",
+						MODE_PRIVATE, null);
+				Cursor cursor = myDb.rawQuery("select * from secureDevice",
+						null);// gets settings
 				cursor.moveToFirst();
+				// gets the secure point location
 				String location = btPoint.getText().toString();
 				if (!cursor.getString(1).equalsIgnoreCase("off")) {
 					alertS = "off";
@@ -145,17 +160,18 @@ public class Perimeter extends Activity {
 					location = "none";
 					latitude = "0";
 					longitude = "0";
-					Log.i("====================", alertS + " " + radiusS
-							+ " " + location + " " + longitude + " "
-							+ latitude);
-					myDb.execSQL("update secureDevice set  active='"
-							+ alertS + "', s_perimeter='" + radiusS
-							+ "', location='" + location + "', latitude='"
-							+ latitude + "',longitude='" + longitude
-							+ "' where id='1'");
+					Log.i("====================", alertS + " " + radiusS + " "
+							+ location + " " + longitude + " " + latitude);
+					// updating the details
+					myDb.execSQL("update secureDevice set  active='" + alertS
+							+ "', s_perimeter='" + radiusS + "', location='"
+							+ location + "', latitude='" + latitude
+							+ "',longitude='" + longitude + "' where id='1'");
 					btDone.setBackgroundResource(0);
-				} else if(enabled){
+				} else if (enabled) {
+					// if the secure point is not fixed
 					if (location.length() == 0) {
+						// alert dialog is displyed
 						AlertDialog.Builder alertD = new AlertDialog.Builder(
 								Perimeter.this);
 						alertD.setTitle("Fix Location");
@@ -168,19 +184,24 @@ public class Perimeter extends Activity {
 											int which) {
 										dialog.cancel();
 										if (enabled) {
+											// if not fixed opening the map
+											// activity to set a location point
 											Intent intent = new Intent(
 													Perimeter.this,
 													GoogleMap.class);
-											startActivityForResult(intent, 1234);
+											startActivityForResult(intent, 1234);// starting
+																					// the
+																					// new
+																					// activity
 										}
 									}
 								});
-						alertD.create().show();
+						alertD.create().show();// craeting the alert dialog
 					} else {
 						cursor = myDb
 								.rawQuery(
 										"select * from secureDevice where id='1'",
-										null);
+										null);// gets the settings
 						cursor.moveToFirst();
 						/*
 						 * Toast.makeText(Perimeter.this, cursor.getCount()+"",
@@ -220,6 +241,7 @@ public class Perimeter extends Activity {
 						Log.i("====================", alertS + " " + radiusS
 								+ " " + location + " " + longitude + " "
 								+ latitude);
+						// updating the details
 						myDb.execSQL("update secureDevice set  active='"
 								+ alertS + "', s_perimeter='" + radiusS
 								+ "', location='" + location + "', latitude='"
@@ -230,23 +252,28 @@ public class Perimeter extends Activity {
 					}
 
 				}
-				myDb.close();
-				AlertDialog.Builder alert=new AlertDialog.Builder(Perimeter.this);
+				myDb.close();// closing the database
+				AlertDialog.Builder alert = new AlertDialog.Builder(
+						Perimeter.this);
+				// creating an alert dialog
 				alert.setTitle("Updated");
 				alert.setMessage("The data were updated successfully");
-				alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						finish();
-						
-					}
-				});
-				alert.create().show();
+				alert.setPositiveButton("Ok",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								finish();// finishing the activity
+
+							}
+						});
+				alert.create().show();// craeting the alert dialog
 			}
 		});
 	}
 
+	// when the enable button is clicked
 	private void clickEnableButton() {
 		btEnable.setOnClickListener(new View.OnClickListener() {
 
@@ -284,6 +311,7 @@ public class Perimeter extends Activity {
 		});
 	}
 
+	// when the radius button is clicked
 	private void clickRadius() {
 		btRadius.setOnClickListener(new View.OnClickListener() {
 
@@ -311,17 +339,19 @@ public class Perimeter extends Activity {
 		});
 	}
 
+	// displaying the route followed
 	private void clickDrawMap() {
 		btMap.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(Perimeter.this, DrawRoute.class);
-				startActivity(intent);
+				startActivity(intent);// opening the new activity
 			}
 		});
 	}
 
+	// to open the map to set a secure point
 	private void clickLocation() {
 		btPoint.setOnClickListener(new View.OnClickListener() {
 
@@ -329,7 +359,8 @@ public class Perimeter extends Activity {
 			public void onClick(View v) {
 				if (enabled) {
 					Intent intent = new Intent(Perimeter.this, GoogleMap.class);
-					startActivityForResult(intent, 1234);
+					startActivityForResult(intent, 1234);// opening the new
+															// activity
 				}
 			}
 		});
@@ -378,26 +409,27 @@ public class Perimeter extends Activity {
 	protected void onResume() {
 		super.onResume();
 	}
+
 	private void clickCountButton() {
 		btCount.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(Perimeter.this, ViewAll.class);
-				startActivityForResult(intent,1);
+				startActivityForResult(intent, 1);// opening the new activity
 				finish();
 			}
 		});
 	}
-	
-	private void clickSettings(){
+
+	private void clickSettings() {
 		btAdvance.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent intent=new Intent(Perimeter.this,Settings.class);
-				startActivity(intent);
-				
+				Intent intent = new Intent(Perimeter.this, Settings.class);
+				startActivity(intent);// opening the new activity
+
 			}
 		});
 	}
